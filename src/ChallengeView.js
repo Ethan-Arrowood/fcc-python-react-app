@@ -16,8 +16,6 @@ class ChallengeView extends Component {
     const challengeIndex = this.getIndex(challenges, challengeTitle);
 
     this.state = {
-      curriculumComplete: false,
-      challenges,
       challengeIndex,
       currentChallenge: challengeIndex === -1 ? null : challenges[challengeIndex]
     }
@@ -30,73 +28,32 @@ class ChallengeView extends Component {
   )
 
   componentWillReceiveProps(nextProps) {
-    console.log(nextProps);
     const nextChallengeTitle = nextProps.match.params.challengeTitle;
-    let nextChallenges = nextProps.challenges;
-    const nextChallengeIndex = this.getIndex(nextChallenges, nextChallengeTitle);
-
-    // complete the current challenge if nextProps was clicked
-    if ( nextChallengeIndex > this.state.challengeIndex ) {
-      nextChallenges[nextChallengeIndex - 1].completed = true;
-    }
-
-    // update localStorage
-    this.props.setChallengeList(nextChallenges);
+    const { challenges } = nextProps;
+    const nextChallengeIndex = this.getIndex(challenges, nextChallengeTitle);
+    const nextChallenge = challenges[nextChallengeIndex];
 
     this.setState({
-      challenges: nextChallenges,
       challengeIndex: nextChallengeIndex,
-      currentChallenge: nextChallenges[nextChallengeIndex]
+      currentChallenge: nextChallenge
     });
-
   }
-
-  handlePrevClick = () => {
-    const { challenges, challengeIndex, curriculumComplete } = this.state;
-    const { history } = this.props;
-
-    if ( curriculumComplete ) {
-      this.setState({
-        curriculumComplete: false
-      });
-    }
-    const prevChallenge = challenges[challengeIndex - 1];
-    const prevPath = prevChallenge.title.toLowerCase().replace(" ", "-");
-    history.push(prevPath);
-
-  }
-
-  handleNextClick = () => {
-    const { challenges, challengeIndex } = this.state;
-    const { history } = this.props;
-
-    if ( challengeIndex + 1 === challenges.length ) {
-      history.push('/curriculum-complete');
-    } else {
-      const nextChallenge = challenges[challengeIndex + 1];
-      const nextPath = nextChallenge.title.toLowerCase().replace(" ", "-");
-      history.push(nextPath);
-    }
-
-  }
-
   render() {
-    const { match } = this.props;
-    const { challengeIndex, curriculumComplete } = this.state;
+    const {
+      toggleMap,
+      handleAdvanceToPrevChallenge,
+      handleAdvanceToNextChallenge } = this.props;
+    const { challengeIndex, currentChallenge } = this.state;
 
-    if ( challengeIndex === 0 ) {
-      // disable prev button
-      console.log('disable prev button');
-    }
     return challengeIndex === -1 ? (
       <ChallengeNotFound />
     ) : (
       <div className="container">
         <div className="top">
-          <div className="challenge-title">Challenge: {this.state.currentChallenge.title}</div>
+          <div className="challenge-title">Challenge: {currentChallenge.title}</div>
           <iframe
             id="repl" frameBorder="0" width="100%" height="100%"
-            src={this.state.currentChallenge.repl}></iframe>
+            src={currentChallenge.repl}></iframe>
 
         </div>
 
@@ -105,7 +62,9 @@ class ChallengeView extends Component {
           <button
             id="prev-button"
             onClick={
-              challengeIndex === 0 ?  null : this.handlePrevClick
+              challengeIndex === 0 ?  null : (
+                () => handleAdvanceToPrevChallenge(challengeIndex)
+              )
             }
             className={
               challengeIndex === 0 ? "btn disabled" : "btn"
@@ -118,13 +77,13 @@ class ChallengeView extends Component {
           <button
             id="next-button"
             className="btn"
-            onClick={this.handleNextClick}
+            onClick={() => handleAdvanceToNextChallenge(challengeIndex)}
           >
             Next Challenge
             <i className="fa fa-arrow-right"></i>
           </button>
 
-          <button id="map-button" className="btn" onClick={() => this.props.toggleMap()}>
+          <button id="map-button" className="btn" onClick={() => toggleMap()}>
             Map
             <i className="fa fa-list"></i>
           </button>
