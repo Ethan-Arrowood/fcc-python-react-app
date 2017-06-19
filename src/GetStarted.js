@@ -2,15 +2,15 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import './styles/GetStarted.css';
 
-const GetStarted = () => {
+const GetStarted = ({ match }) => {
   return (
     <div className='get-started'>
-      Welcome to FreeCodeCamp Python Curriculum.
-      Your progress is stored directly in your browser (using localStorage).
+      <h1>Welcome to FreeCodeCamp Python Curriculum.</h1>
+      <h3>Your progress is stored directly in your browser (using localStorage).</h3>
+      <h2>Happy coding!</h2>
 
-      Happy Coding!
 
-      <Link to="/print">Start</Link>
+      <Link to={`${match.url}print`}>Start</Link>
     </div>
   );
 };

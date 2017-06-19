@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Route, Switch } from 'react-router-dom';
+import { Route, Switch, Redirect } from 'react-router-dom';
 import {withRouter} from 'react-router';
 
 import './styles/App.css';
@@ -47,6 +47,8 @@ class App extends Component {
     return parseInt(date, 10) === last_edit;
   }
 
+  // given a new list of challenges updates localStorage and state
+  // note: setState triggers a rerender
   handleUpdateChallenges = (newChallengesList) => {
     this.setChallengeList(newChallengesList);
     this.setState({
@@ -54,49 +56,73 @@ class App extends Component {
     });
   }
 
+  // click event attached to 'Next Button'
   handleAdvanceToNextChallenge = (currentChallengeIndex) => {
+    // get challenges list from state
     const { challenges } = this.state;
+    // set the next index by incrementing current index
     const nextChallengeIndex = currentChallengeIndex + 1;
+    // if this is the last challenge
     if ( nextChallengeIndex === challenges.length ) {
+      // curriculum complete page
       this.props.history.push('/curriculum-complete');
     } else {
+      // get next challenge Object
       const nextChallenge = challenges[nextChallengeIndex];
+      // determine the next path
       const nextPath = nextChallenge.title.toLowerCase().replace(" ", "-");
-
+      // push the path to router with a custom state object
       this.props.history.push(nextPath, { completedChallenge: currentChallengeIndex });
     }
   }
+
+  // click event attached to 'Prev Button'
   handleAdvanceToPrevChallenge = (currentChallengeIndex) => {
+    // get challenges list from state
     const { challenges } = this.state;
+    // set the prev index by decrementing current index
     const prevChallengeIndex = currentChallengeIndex - 1;
+    // get the prev challenge
     const prevChallenge = challenges[prevChallengeIndex];
+    // get the prev path
     const prevPath = prevChallenge.title.toLowerCase().replace(" ", "-");
 
+    // push to history, no custom state needed
     this.props.history.push(prevPath);
   }
 
+  // when the history is pushed we are pushing new props to the App component
   componentWillReceiveProps(nextProps) {
+    // get the next title ( this is the path )
     const nextChallengeTitle = nextProps.match.params.challengeTitle;
+    // get the challenge Array[]
     let nextChallenges = this.state.challenges;
+    // get the index of the next challenge
     const nextChallengeIndex = this.getIndex(nextChallenges, nextChallengeTitle);
 
     // complete the current challenge if nextProps was clicked
+    // this is the custom state object passed to the history.push(...) method
     if ( nextProps.location.state ) {
       const completedChallengeIndex = nextProps.location.state.completedChallenge;
+      // if the index exists set the completed value to true
       if ( completedChallengeIndex ) {
         nextChallenges[completedChallengeIndex].completed = true;
       }
+      // if we update the challenge list,
+      // setState with the handleUpdateChallenges method
       this.handleUpdateChallenges(nextChallenges);
     }
 
   }
 
+  // helper method for finding the index of an element
   getIndex = ( challenges, challengeTitle ) => (
     challenges.findIndex(c => (
       c.title.toLowerCase().replace(" ", "-") === challengeTitle
     ))
   )
 
+  // used to open and close the map
   toggleMap = () => {
     const { mapWidth } = this.state;
     this.setState({
@@ -106,12 +132,13 @@ class App extends Component {
 
   render() {
     return (
-      <div>
+      <div className="app">
         <Navbar />
 
+        {/* The first 'match' will be rendered. */}
         <Switch>
 
-          <Route path="/curriculum-complete" component={CurriculumComplete} />
+          <Route path={`${this.props.match.url}curriculum-complete`} component={CurriculumComplete} />
 
           <Route path={`${this.props.match.url}:challengeTitle`} render={props => (
             <ChallengeView {...props}
@@ -121,13 +148,14 @@ class App extends Component {
               toggleMap={this.toggleMap}/>
           )} />
 
-          <Route path={`${this.props.match.url}/`} component={GetStarted} />
+          <Route path={`${this.props.match.url}`} component={GetStarted} />
 
+          <Redirect to='/fcc-python-react-app' />
         </Switch>
 
 
         <Map
-          challengesList={this.state.challenges} 
+          challengesList={this.state.challenges}
           width={this.state.mapWidth}
           toggleMap={this.toggleMap}
         />
