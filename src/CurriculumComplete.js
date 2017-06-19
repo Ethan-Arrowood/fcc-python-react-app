@@ -4,9 +4,9 @@ const CurriculumComplete = ({history}) => {
   return (
     <div>
       Curriculum Complete
-      
+
       <button onClick={() => {
-        localStorage.clear('fcc-python-challenges');
+        localStorage.clear('fcc-python-challenges-last-edit');
         history.push('/');
       }}>Reset Curriculum</button>
     </div>

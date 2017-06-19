@@ -11,16 +11,29 @@
   transition: 0.5s;
 }
 
+.map button {
+  background-color: transparent;
+  border: none;
+  margin: 0;
+  padding: 0;
+  text-align: left;
+  display: inline-block;
+}
+
 .map a {
+  display: block;
+}
+.map a, .map button {
   padding: 8px 8px 8px 32px;
   text-decoration: none;
   font-size: 25px;
   color: #818181;
-  display: block;
   transition: 0.3s;
 }
 
-.map a:hover, .offcanvas a:focus {
+.map a:hover, .offcanvas a:focus,
+.map button:hover
+ {
   color: #006400;
 }
 
@@ -57,4 +70,7 @@
   align-self: left;
   padding-left: 5px;
   margin-top: 0;
+}
+.lesson-list-element i {
+  color: #818181
 }
