@@ -11,17 +11,24 @@
   width: 1200px;
   justify-content: space-between;
   align-items: flex-start;
-  height:600px;
+  height:700px;
 }
 
 .top {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   flex-grow: 1;
   height: 100%;
   width: 100%;
   margin-bottom: 25px;
 }
+
+.challenge-title {
+  text-align: center;
+  font-size: 1.3rem;
+}
+
+
 .bottom {
   display: flex;
   flex-direction: row;

@@ -11,7 +11,7 @@ import './styles/index.css';
 const history = createBrowserHistory()
 
 ReactDOM.render(
-  <Router history={history}>
+  <Router basename='/fcc-python-react-app/' history={history}>
     <App />
   </Router>, document.getElementById('root'));
 registerServiceWorker();

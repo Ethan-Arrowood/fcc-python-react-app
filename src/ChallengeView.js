@@ -93,9 +93,9 @@ class ChallengeView extends Component {
     ) : (
       <div className="container">
         <div className="top">
-          <div>{this.state.currentChallenge.title}</div>
+          <div className="challenge-title">Challenge: {this.state.currentChallenge.title}</div>
           <iframe
-            id="repl" frameBorder="0" width="100%" height="auto"
+            id="repl" frameBorder="0" width="100%" height="100%"
             src={this.state.currentChallenge.repl}></iframe>
 
         </div>
