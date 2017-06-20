@@ -1,11 +1,14 @@
 import React from 'react';
+import './styles/CurriculumComplete.css';
 
 const CurriculumComplete = ({history}) => {
   return (
-    <div>
-      Curriculum Complete
+    <div className="curriculum-complete">
+      <h2>Congrats! You have completed the FreeCodeCamp Python Curriculum</h2>
 
-      <button onClick={() => {
+      <h3>Wanna do it again? Go ahead and click the button below to reset your progress.</h3>
+
+      <button className="btn" onClick={() => {
         localStorage.clear('fcc-python-challenges-last-edit');
         history.push('/');
       }}>Reset Curriculum</button>

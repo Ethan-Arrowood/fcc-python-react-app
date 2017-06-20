@@ -21,3 +21,7 @@
   cursor: not-allowed;
   background-color: #E0E0E0;
 }
+
+.btn > i {
+  margin: 5px;
+}

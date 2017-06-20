@@ -10,7 +10,7 @@ const GetStarted = ({ match }) => {
       <h2>Happy coding!</h2>
 
 
-      <Link to={`${match.url}print`}>Start</Link>
+      <Link className="btn link" to={`${match.url}print`}>Start</Link>
     </div>
   );
 };
