@@ -26,13 +26,15 @@ class ChallengeView extends Component {
       c.title.toLowerCase().replace(" ", "-") === challengeTitle
     ))
   )
-
+  // each time a new path is pushed to history
+  // this component receives new props
   componentWillReceiveProps(nextProps) {
     const nextChallengeTitle = nextProps.match.params.challengeTitle;
     const { challenges } = nextProps;
     const nextChallengeIndex = this.getIndex(challenges, nextChallengeTitle);
     const nextChallenge = challenges[nextChallengeIndex];
 
+    // update the currently loaded challenge and set it to state
     this.setState({
       challengeIndex: nextChallengeIndex,
       currentChallenge: nextChallenge
@@ -44,7 +46,8 @@ class ChallengeView extends Component {
       handleAdvanceToPrevChallenge,
       handleAdvanceToNextChallenge } = this.props;
     const { challengeIndex, currentChallenge } = this.state;
-
+    // if the user trys to navigate to a non-existant challenge
+    // we render the ChallengeNotFound component
     return challengeIndex === -1 ? (
       <ChallengeNotFound />
     ) : (

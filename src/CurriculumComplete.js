@@ -9,6 +9,7 @@ const CurriculumComplete = ({history}) => {
       <h3>Wanna do it again? Go ahead and click the button below to reset your progress.</h3>
 
       <button className="btn" onClick={() => {
+        // clear the last-edit date forces the app to reload challenge list
         localStorage.clear('fcc-python-challenges-last-edit');
         history.push('/');
       }}>Reset Curriculum</button>

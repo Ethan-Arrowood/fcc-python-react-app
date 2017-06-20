@@ -4,13 +4,15 @@ import {withRouter} from 'react-router';
 
 import './styles/App.css';
 
+// Component imports
 import Navbar from './Navbar';
 import ChallengeView from './ChallengeView';
 import CurriculumComplete from './CurriculumComplete';
 import GetStarted from './GetStarted';
-
-import ChallengesJSON from './challenges.json';
 import Map from './Map';
+
+// data
+import ChallengesJSON from './challenges.json';
 
 class App extends Component {
   constructor(props) {
